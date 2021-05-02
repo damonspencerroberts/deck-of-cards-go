@@ -33,3 +33,8 @@ func (d deck) print() {
 		fmt.Println(i, card)
 	}
 }
+
+// deck, deck tells go we return 2 values both of type deck
+func deal(d deck, handSize int) (deck, deck) {
+	return d[:handSize], d[handSize:]
+}
