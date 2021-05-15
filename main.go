@@ -2,7 +2,9 @@ package main
 
 func main() {
 	cards := newDeckFromFile("my_cards")
-	cards.print()
+	cards.shuffle()
+	myCards, _ := deal(cards, 7)
+	myCards.print()
 }
 
 // Byte slice
