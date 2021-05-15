@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"io/ioutil"
+	"os"
+	"strings"
+)
 
 // Create a new type of deck
 // which is a slice of strings
@@ -37,4 +42,28 @@ func (d deck) print() {
 // deck, deck tells go we return 2 values both of type deck
 func deal(d deck, handSize int) (deck, deck) {
 	return d[:handSize], d[handSize:]
+}
+
+// joins all the cards into a single string
+func (d deck) toString() string {
+	return strings.Join([]string(d), ",")
+}
+
+//uses io utils to save to a file
+func (d deck) saveToFile(filename string) error {
+	return ioutil.WriteFile(filename, []byte(d.toString()), 0666)
+}
+
+func newDeckFromFile(filename string) deck {
+	//returns two elements byte slice and the error
+	bs, err := ioutil.ReadFile(filename)
+	if err != nil {
+		// Option 1 - log the error and return a call to newDeck()
+		// Option 2 - log the error and quit program
+
+		fmt.Println("Error: ", err)
+		os.Exit(1)
+	}
+	// turns to deck to use all of the above functions
+	return deck(strings.Split(string(bs), ","))
 }
